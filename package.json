@@ -1,0 +1,14 @@
+{
+  "name": "malayalimed",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@9.0.0",
+  "scripts": {
+    "dev": "pnpm --filter @mm/web dev",
+    "build": "pnpm --filter @mm/web build",
+    "start": "pnpm --filter @mm/web start",
+    "lint": "pnpm --filter @mm/web lint",
+    "db:migrate": "node services/db/migrate.js"
+  }
+}
