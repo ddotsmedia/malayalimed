@@ -7,6 +7,7 @@ import { initials, fmtCurrency, fmtTime } from '@/lib/formatters';
 import RatingDisplay from '@/components/RatingDisplay';
 import ReviewStats from '@/components/reviews/ReviewStats';
 import ReviewForm from '@/components/reviews/ReviewForm';
+import CertsSection from '@/components/doctors/CertsSection';
 
 export const dynamic = 'force-dynamic';
 const DAYS = { ml: ['ഞായർ', 'തിങ്കൾ', 'ചൊവ്വ', 'ബുധൻ', 'വ്യാഴം', 'വെള്ളി', 'ശനി'], en: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] };
@@ -57,6 +58,8 @@ export default async function DoctorProfile(props) {
         )}
         <a href={`/${locale}/doctors/${d.slug}#book`} className="mt-3 inline-block rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white">{t(locale, 'book_now')}</a>
       </section>
+
+      <CertsSection doctorId={d.id} />
 
       <section className="space-y-3">
         <h2 className="text-lg font-bold text-gray-900">{ml ? 'റിവ്യൂകൾ' : 'Reviews'}</h2>

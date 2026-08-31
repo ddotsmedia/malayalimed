@@ -5,7 +5,7 @@ import { requireDoctor } from '@/lib/doctorAuth';
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Doctor · MalayaliMed' };
 
-const NAV = [['/doctor/dashboard', '📊 Dashboard'], ['/doctor/patients', '👥 Patients'], ['/doctor/encounters/create', '📝 New Encounter']];
+const NAV = [['/doctor/dashboard', '📊 Dashboard'], ['/doctor/patients', '👥 Patients'], ['/doctor/patient-messages', '💬 Messages'], ['/doctor/encounters/create', '📝 New Encounter'], ['/doctor/profile/certifications', '🎓 Certifications']];
 
 export default async function DoctorLayout({ children }) {
   if (!(await requireDoctor())) redirect('/ml');
