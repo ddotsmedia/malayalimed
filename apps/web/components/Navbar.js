@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import { t } from '@/lib/i18n';
 
-export default function Navbar({ locale = 'ml' }) {
+export default function Navbar({ locale = 'ml', authed = false }) {
   const other = locale === 'ml' ? 'en' : 'ml';
+  const ml = locale === 'ml';
   const nav = [
     { href: `/${locale}/doctors`, label: t(locale, 'doctors') },
     { href: `/${locale}/hospitals`, label: t(locale, 'hospitals') },
@@ -21,9 +22,19 @@ export default function Navbar({ locale = 'ml' }) {
         <nav className="ml-2 hidden flex-1 gap-4 text-sm font-medium text-gray-600 md:flex">
           {nav.map((n) => <Link key={n.href} href={n.href} className="hover:text-brand">{n.label}</Link>)}
         </nav>
-        <Link href={`/${other}`} className="ml-auto rounded-lg border border-gray-300 px-2.5 py-1.5 text-xs font-semibold text-gray-600 hover:border-brand hover:text-brand">
-          {locale === 'ml' ? 'EN' : 'ML'}
-        </Link>
+        <div className="ml-auto flex items-center gap-2">
+          <Link href={`/${other}`} className="rounded-lg border border-gray-300 px-2.5 py-1.5 text-xs font-semibold text-gray-600 hover:border-brand hover:text-brand">
+            {locale === 'ml' ? 'EN' : 'ML'}
+          </Link>
+          {authed ? (
+            <>
+              <Link href={`/${locale}/patient/health-records`} className="hidden text-sm font-medium text-gray-600 hover:text-brand sm:inline">{ml ? 'എന്റെ രേഖകൾ' : 'My Records'}</Link>
+              <a href="/api/auth/logout" className="rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-semibold text-gray-600 hover:border-brand hover:text-brand">{ml ? 'ലോഗൗട്ട്' : 'Logout'}</a>
+            </>
+          ) : (
+            <Link href={`/${locale}/login`} className="rounded-lg bg-brand px-3 py-1.5 text-xs font-semibold text-white hover:bg-brand-dark">{ml ? 'ലോഗിൻ' : 'Login'}</Link>
+          )}
+        </div>
       </div>
     </header>
   );
