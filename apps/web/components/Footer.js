@@ -18,6 +18,11 @@ export default function Footer({ locale = 'ml' }) {
           <Link href={`/${locale}/news`} className="hover:text-brand">{locale === 'ml' ? 'വാർത്തകൾ' : 'Health News'}</Link>
           <Link href={`/${locale}/wellness`} className="hover:text-brand">{locale === 'ml' ? 'ജീവിതം' : 'Wellness'}</Link>
           <Link href={`/${locale}/first-aid`} className="hover:text-brand">{locale === 'ml' ? 'പ്രഥമ ശുശ്രൂഷ' : 'First Aid'}</Link>
+          <Link href={`/${locale}/pharmacies`} className="hover:text-brand">{locale === 'ml' ? 'ഫാർമസികൾ' : 'Pharmacies'}</Link>
+          <Link href={`/${locale}/ambulance`} className="hover:text-brand">{locale === 'ml' ? 'ആംബുലൻസ്' : 'Ambulance'}</Link>
+          <Link href={`/${locale}/dental`} className="hover:text-brand">{locale === 'ml' ? 'ഡെന്റൽ' : 'Dental'}</Link>
+          <Link href={`/${locale}/eye-hospitals`} className="hover:text-brand">{locale === 'ml' ? 'നേത്ര ആശുപത്രികൾ' : 'Eye Hospitals'}</Link>
+          <Link href={`/${locale}/mental-health-centres`} className="hover:text-brand">{locale === 'ml' ? 'മാനസികാരോഗ്യം' : 'Mental Health'}</Link>
           <Link href={`/${locale}/ask`} className="hover:text-brand">{locale === 'ml' ? 'ഡോക്ടറോട് ചോദിക്കൂ' : 'Ask a Doctor'}</Link>
           <Link href={`/${locale}/jobs`} className="hover:text-brand">{t(locale, 'jobs')}</Link>
         </div>
