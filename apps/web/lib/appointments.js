@@ -27,6 +27,13 @@ export function listForPatient(patientId) {
     WHERE a.patient_id=$1 AND a.deleted_at IS NULL ORDER BY a.slot_date DESC, a.slot_start DESC`, [patientId]);
 }
 
+export function getAppointmentForUser(id, userId) {
+  return safeQuery(`SELECT a.id, a.booking_ref, a.slot_date, a.slot_start, a.slot_end, a.mode, a.status, a.fee,
+    a.doctor_id, a.patient_id, d.display_name AS doctor_name, d.user_id AS doctor_user_id
+    FROM appointments a JOIN doctors d ON d.id=a.doctor_id
+    WHERE a.id=$1 AND (a.patient_id=$2 OR d.user_id=$2) AND a.deleted_at IS NULL`, [id, userId]).then((r) => r[0] || null);
+}
+
 export async function cancelAppointment(id, patientId) {
   const { rowCount } = await getPool().query(
     `UPDATE appointments SET status='cancelled', updated_at=now()

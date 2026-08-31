@@ -35,4 +35,12 @@ bash infra/scripts/deploy.sh    # build + migrate + recreate web container
 - **Components:** Navbar, Footer, DoctorCard, HospitalCard, JobCard, SearchBar, SpecialtyFilter, RatingDisplay, HealthHub, EmptyState, LoadingSpinner.
 - **lib:** i18n, doctors, hospitals, appointments, jobs, reference, validators, formatters, constants, session.
 
+## Admin, payments, video
+- **Admin panel** at `/admin` (platform_admin only): dashboard, users, doctors (verify/reject), hospitals, appointments, analytics, reports, settings + admin APIs.
+- **Payments** via Stripe Checkout over the REST API (no `@stripe` package) — simulates without `STRIPE_SECRET_KEY`. Endpoints: `/api/payments/{create-intent,confirm,refund}`; `PaymentForm` component.
+- **Video consultations** via a Jitsi Meet iframe (`VideoConsultation`) + `/api/appointments/[id]/video-room`; wired into `/[locale]/appointments/[id]`.
+
+## Production
+Server **187.127.185.239** · `malayalimed.com`. See `docs/DEPLOYMENT.md` for DNS, Let's Encrypt SSL, backups, and monitoring.
+
 See `BLOCKERS.md` for honest build/scope status.
