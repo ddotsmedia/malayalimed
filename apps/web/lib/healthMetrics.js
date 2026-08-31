@@ -24,7 +24,7 @@ export function listMetrics(patientId, type, days = 30) {
   if (type) { args.push(type); where.push(`metric_type=$${args.length}`); }
   args.push(days);
   return safeQuery(`SELECT id, metric_type, value, value2, unit, recorded_date, recorded_at
-    FROM health_metrics WHERE ${where.join(' AND ')} AND recorded_date > current_date-$${args.length}
+    FROM health_metrics WHERE ${where.join(' AND ')} AND recorded_date > current_date-($${args.length})::int
     ORDER BY recorded_date ASC`, args);
 }
 

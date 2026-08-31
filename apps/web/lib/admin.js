@@ -120,8 +120,8 @@ export function usersByRole() {
 }
 export function appointmentTrend(days = 30) {
   return safeQuery(`SELECT to_char(g.day,'MM-DD') AS day, coalesce(c.n,0)::int AS n
-    FROM generate_series(current_date-($1-1), current_date, interval '1 day') g(day)
-    LEFT JOIN (SELECT slot_date d, count(*) n FROM appointments WHERE deleted_at IS NULL AND slot_date > current_date-$1 GROUP BY 1) c ON c.d=g.day
+    FROM generate_series(current_date-($1::int-1), current_date, interval '1 day') g(day)
+    LEFT JOIN (SELECT slot_date d, count(*) n FROM appointments WHERE deleted_at IS NULL AND slot_date > current_date-$1::int GROUP BY 1) c ON c.d=g.day
     ORDER BY g.day`, [days]);
 }
 export function topDoctorsByRating(limit = 10) {
@@ -130,7 +130,7 @@ export function topDoctorsByRating(limit = 10) {
 
 export async function registrationTrend(days = 30) {
   return safeQuery(`SELECT to_char(g.day,'MM-DD') AS day, coalesce(c.n,0)::int AS n
-    FROM generate_series(current_date-($1-1), current_date, interval '1 day') g(day)
-    LEFT JOIN (SELECT created_at::date d, count(*) n FROM users WHERE created_at > now()-make_interval(days=>$1) GROUP BY 1) c ON c.d=g.day
+    FROM generate_series(current_date-($1::int-1), current_date, interval '1 day') g(day)
+    LEFT JOIN (SELECT created_at::date d, count(*) n FROM users WHERE created_at > now()-make_interval(days=>$1::int) GROUP BY 1) c ON c.d=g.day
     ORDER BY g.day`, [days]);
 }
