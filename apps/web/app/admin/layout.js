@@ -12,7 +12,9 @@ const NAV = [
   ['/admin/doctors', '🩺 Doctors'], ['/admin/hospitals', '🏥 Hospitals'],
   ['/admin/appointments', '📅 Appointments'], ['/admin/reviews', '⭐ Reviews'],
   ['/admin/doctor-registrations', '📝 Registrations'], ['/admin/bulk-import', '⬆️ Bulk Import'],
-  ['/admin/content', '📚 Content'], ['/admin/analytics', '📈 Analytics'],
+  ['/admin/billing', '🧾 Billing'], ['/admin/lab-orders', '🔬 Lab Orders'], ['/admin/pharmacy/inventory', '💊 Pharmacy'],
+  ['/admin/moderation/content', '🛡️ Moderation'],
+  ['/admin/content', '📚 Content'], ['/admin/analytics', '📈 Analytics'], ['/admin/analytics/revenue', '💰 Revenue'],
   ['/admin/audit-logs', '🧾 Audit Logs'], ['/admin/reports', '📄 Reports'], ['/admin/settings', '⚙️ Settings'],
 ];
 
