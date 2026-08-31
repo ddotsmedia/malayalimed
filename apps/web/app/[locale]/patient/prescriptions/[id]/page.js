@@ -3,6 +3,7 @@ import { resolveLocale } from '@/lib/i18n';
 import { getSession } from '@/lib/session';
 import { getPrescription } from '@/lib/prescriptions';
 import PrescriptionViewer from '@/components/prescriptions/PrescriptionViewer';
+import RefillSection from '@/components/prescriptions/RefillSection';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Prescription' };
@@ -27,6 +28,7 @@ export default async function PrescriptionDetail(props) {
         )}
       </div>
       <PrescriptionViewer fileUrl={p.file_url} fileName={p.file_name} />
+      <RefillSection prescriptionId={p.id} createdAt={p.created_at} />
     </div>
   );
 }

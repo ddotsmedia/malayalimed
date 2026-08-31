@@ -25,5 +25,7 @@ export async function POST(request) {
   if (!v.success) return NextResponse.json({ errors: [v.error] }, { status: 400 });
   const res = await createReview({ patientId: s.userId, entityType, entityId, rating: b.rating, title: b.title, body: b.text ?? b.body });
   if (res.error) return NextResponse.json({ errors: [res.error] }, { status: 400 });
+  const { evaluateBadges } = await import('@/lib/badges');
+  evaluateBadges(s.userId).catch(() => {});
   return NextResponse.json({ data: res, errors: null }, { status: 201 });
 }

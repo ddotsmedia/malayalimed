@@ -35,6 +35,25 @@ export const doctorRegSchema = z.object({
   about: z.string().max(4000).optional().nullable(),
 });
 
+export const symptomSchema = z.object({
+  symptoms: z.array(z.string().min(1).max(60)).min(1).max(12),
+});
+
+const time = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/).optional().nullable();
+export const reminderSchema = z.object({
+  smsEnabled: z.boolean().optional(),
+  emailEnabled: z.boolean().optional(),
+  whatsappEnabled: z.boolean().optional(),
+  inappEnabled: z.boolean().optional(),
+  quietHoursStart: time,
+  quietHoursEnd: time,
+  reminderHoursBefore: z.coerce.number().int().min(1).max(72).optional(),
+});
+
+export const refillRequestSchema = z.object({
+  reason: z.string().max(1000).optional().nullable(),
+});
+
 export function parse(schema, input) {
   const r = schema.safeParse(input);
   if (r.success) return { ok: true, data: r.data };

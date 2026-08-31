@@ -16,5 +16,7 @@ export async function POST(request) {
   const b = await request.json().catch(() => ({}));
   const res = await createQuestion({ patientId: s.userId, title: b.title, body: b.body, specialtyId: b.specialty_id, isAnonymous: b.is_anonymous });
   if (res.error) return NextResponse.json({ errors: [res.error] }, { status: 400 });
+  const { evaluateBadges } = await import('@/lib/badges');
+  evaluateBadges(s.userId).catch(() => {});
   return NextResponse.json({ data: res, errors: null }, { status: 201 });
 }

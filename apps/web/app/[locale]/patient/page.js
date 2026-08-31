@@ -43,6 +43,9 @@ export default async function PatientDashboard(props) {
         <Card href={`/${locale}/patient/health-records`} label={ml ? 'ഹെൽത്ത് റെക്കോർഡുകൾ' : 'Health Records'} value={records.length} />
         <Card href={`/${locale}/patient/health-tracker`} label={ml ? 'ഹെൽത്ത് ട്രാക്കർ' : 'Health Tracker'} value="→" />
         <Card href={`/${locale}/patient/prescriptions`} label={ml ? 'കുറിപ്പടികൾ' : 'Prescriptions'} value="→" />
+        <Card href={`/${locale}/symptom-checker`} label={ml ? 'സിംപ്റ്റം ചെക്കർ' : 'Symptom Checker'} value="→" />
+        <Card href={`/${locale}/patient/achievements`} label={ml ? 'അച്ചീവ്‌മെന്റുകൾ' : 'Achievements'} value="→" />
+        <Card href={`/${locale}/patient/settings/notifications`} label={ml ? 'റിമൈൻഡർ ക്രമീകരണം' : 'Reminders'} value="→" />
         <Card href={`/${locale}/ask`} label={ml ? 'ചോദ്യങ്ങൾ' : 'Ask a Doctor'} value="→" />
       </div>
 

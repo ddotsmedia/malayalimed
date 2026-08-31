@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { addMetric, listMetrics } from '@/lib/healthMetrics';
 import { metricSchema, parse } from '@/lib/schemas/patient';
+import { evaluateBadges } from '@/lib/badges';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,5 +22,6 @@ export async function POST(request) {
   if (!v.ok) return NextResponse.json({ errors: [v.error] }, { status: 400 });
   const res = await addMetric(s.userId, v.data);
   if (res.error) return NextResponse.json({ errors: [res.error] }, { status: 400 });
+  evaluateBadges(s.userId).catch(() => {});
   return NextResponse.json({ data: res, errors: null }, { status: 201 });
 }

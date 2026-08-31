@@ -21,5 +21,7 @@ export async function POST(request) {
   if (!v.ok) return NextResponse.json({ errors: [v.error] }, { status: 400 });
   const res = await createPrescription(s.userId, { ...v.data, fileDataUrl: b.fileDataUrl });
   if (res.error) return NextResponse.json({ errors: [res.error] }, { status: 400 });
+  const { evaluateBadges } = await import('@/lib/badges');
+  evaluateBadges(s.userId).catch(() => {});
   return NextResponse.json({ data: res, errors: null }, { status: 201 });
 }
