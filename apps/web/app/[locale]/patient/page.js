@@ -4,6 +4,7 @@ import { getSession } from '@/lib/session';
 import { listForPatient } from '@/lib/appointments';
 import { listRecords } from '@/lib/healthRecords';
 import { one } from '@mm/db';
+import PatientDashboard from './PatientDashboard';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,7 +12,7 @@ export async function generateMetadata() {
   return { title: 'My Dashboard' };
 }
 
-export default async function PatientDashboard(props) {
+export default async function PatientHome(props) {
   const params = await props.params;
   const locale = resolveLocale(params.locale);
   const ml = locale === 'ml';
@@ -38,30 +39,19 @@ export default async function PatientDashboard(props) {
         <p className="text-sm text-gray-600">{user?.phone || user?.email}</p>
       </div>
 
+      <PatientDashboard locale={locale} />
+
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
         <Card href={`/${locale}/appointments`} label={ml ? 'അപ്പോയിന്റ്‌മെന്റുകൾ' : 'Appointments'} value={appts.length} />
         <Card href={`/${locale}/patient/health-records`} label={ml ? 'ഹെൽത്ത് റെക്കോർഡുകൾ' : 'Health Records'} value={records.length} />
+        <Card href={`/${locale}/patient/feed`} label={ml ? 'ഹെൽത്ത് ഫീഡ്' : 'Health Feed'} value="→" />
+        <Card href={`/${locale}/ai-assistant`} label={ml ? 'AI അസിസ്റ്റന്റ്' : 'AI Assistant'} value="→" />
         <Card href={`/${locale}/patient/health-tracker`} label={ml ? 'ഹെൽത്ത് ട്രാക്കർ' : 'Health Tracker'} value="→" />
         <Card href={`/${locale}/patient/prescriptions`} label={ml ? 'കുറിപ്പടികൾ' : 'Prescriptions'} value="→" />
         <Card href={`/${locale}/symptom-checker`} label={ml ? 'സിംപ്റ്റം ചെക്കർ' : 'Symptom Checker'} value="→" />
         <Card href={`/${locale}/patient/achievements`} label={ml ? 'അച്ചീവ്‌മെന്റുകൾ' : 'Achievements'} value="→" />
         <Card href={`/${locale}/patient/settings/notifications`} label={ml ? 'റിമൈൻഡർ ക്രമീകരണം' : 'Reminders'} value="→" />
-        <Card href={`/${locale}/ask`} label={ml ? 'ചോദ്യങ്ങൾ' : 'Ask a Doctor'} value="→" />
       </div>
-
-      <section className="rounded-2xl border border-gray-200 bg-white p-5">
-        <h2 className="mb-3 text-lg font-bold text-gray-900">{ml ? 'സമീപകാല അപ്പോയിന്റ്‌മെന്റുകൾ' : 'Recent Appointments'}</h2>
-        {appts.length === 0 ? <p className="text-sm text-gray-500">{ml ? 'ഒന്നുമില്ല' : 'None yet'}</p> : (
-          <ul className="space-y-2 text-sm text-gray-700">
-            {appts.slice(0, 5).map((a) => (
-              <li key={a.id} className="flex justify-between border-b border-gray-100 pb-1">
-                <span>{a.doctor_name || a.doctor_display_name || '—'}</span>
-                <span className="text-gray-500">{a.slot_date} · {a.status}</span>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
     </div>
   );
 }

@@ -50,6 +50,10 @@ export const reminderSchema = z.object({
   reminderHoursBefore: z.coerce.number().int().min(1).max(72).optional(),
 });
 
+export const chatSchema = z.object({
+  message: z.string().min(1).max(1000),
+});
+
 export const refillRequestSchema = z.object({
   reason: z.string().max(1000).optional().nullable(),
 });

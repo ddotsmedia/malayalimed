@@ -1,5 +1,6 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import ChatTrigger from '@/components/chat/ChatTrigger';
 import { resolveLocale, LOCALES } from '@/lib/i18n';
 import { getSession } from '@/lib/session';
 
@@ -18,6 +19,7 @@ export default async function LocaleLayout(props) {
       <Navbar locale={locale} authed={!!session} />
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-6">{props.children}</main>
       <Footer locale={locale} />
+      <ChatTrigger locale={locale} />
     </div>
   );
 }
