@@ -14,6 +14,10 @@ export default function Footer({ locale = 'ml' }) {
           <Link href={`/${locale}/symptoms`} className="hover:text-brand">{locale === 'ml' ? 'ലക്ഷണങ്ങൾ' : 'Symptoms'}</Link>
           <Link href={`/${locale}/medicines`} className="hover:text-brand">{locale === 'ml' ? 'മരുന്നുകൾ' : 'Medicines'}</Link>
           <Link href={`/${locale}/blood-banks`} className="hover:text-brand">{locale === 'ml' ? 'ബ്ലഡ് ബാങ്കുകൾ' : 'Blood Banks'}</Link>
+          <Link href={`/${locale}/procedures`} className="hover:text-brand">{locale === 'ml' ? 'ചികിത്സാ നടപടികൾ' : 'Procedures'}</Link>
+          <Link href={`/${locale}/news`} className="hover:text-brand">{locale === 'ml' ? 'വാർത്തകൾ' : 'Health News'}</Link>
+          <Link href={`/${locale}/wellness`} className="hover:text-brand">{locale === 'ml' ? 'ജീവിതം' : 'Wellness'}</Link>
+          <Link href={`/${locale}/first-aid`} className="hover:text-brand">{locale === 'ml' ? 'പ്രഥമ ശുശ്രൂഷ' : 'First Aid'}</Link>
           <Link href={`/${locale}/ask`} className="hover:text-brand">{locale === 'ml' ? 'ഡോക്ടറോട് ചോദിക്കൂ' : 'Ask a Doctor'}</Link>
           <Link href={`/${locale}/jobs`} className="hover:text-brand">{t(locale, 'jobs')}</Link>
         </div>
