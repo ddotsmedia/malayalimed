@@ -1,7 +1,11 @@
 import { notFound } from 'next/navigation';
 import { resolveLocale } from '@/lib/i18n';
 import { getHospitalBySlug, hospitalDepartments, hospitalServices } from '@/lib/hospitals';
+import { reviewStats, listReviews } from '@/lib/reviews';
+import { getSession } from '@/lib/session';
 import RatingDisplay from '@/components/RatingDisplay';
+import ReviewStats from '@/components/reviews/ReviewStats';
+import ReviewForm from '@/components/reviews/ReviewForm';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,7 +21,7 @@ export default async function HospitalProfile(props) {
   const ml = locale === 'ml';
   const h = await getHospitalBySlug(params.slug);
   if (!h) notFound();
-  const [depts, services] = await Promise.all([hospitalDepartments(h.id), hospitalServices(h.id)]);
+  const [depts, services, stats, reviews, session] = await Promise.all([hospitalDepartments(h.id), hospitalServices(h.id), reviewStats('hospital', h.id), listReviews('hospital', h.id, { limit: 10 }), getSession()]);
   const name = ml ? (h.name_ml || h.name_en) : h.name_en;
   const district = ml ? (h.district_ml || h.district_en) : h.district_en;
 
@@ -47,6 +51,23 @@ export default async function HospitalProfile(props) {
           <ul className="space-y-1 text-sm text-gray-700">{services.map((s, i) => <li key={i}>• {ml ? (s.name_ml || s.name_en) : s.name_en}{s.available_24x7 ? ' · 24×7' : ''}</li>)}</ul>
         </section>
       )}
+
+      <section className="space-y-3">
+        <h2 className="text-lg font-bold text-gray-900">{ml ? 'റിവ്യൂകൾ' : 'Reviews'}</h2>
+        {stats.count > 0 && <ReviewStats stats={stats} ml={ml} />}
+        <ReviewForm entityType="hospital" entityId={h.id} authed={!!session} locale={locale} />
+        {reviews.length === 0 ? <p className="text-sm text-gray-500">{ml ? 'റിവ്യൂകളൊന്നുമില്ല' : 'No reviews yet'}</p> : (
+          <ul className="space-y-2">
+            {reviews.map((r) => (
+              <li key={r.id} className="rounded-xl border border-gray-200 bg-white p-3">
+                <RatingDisplay avg={r.rating} />
+                {r.title && <p className="font-semibold text-gray-900">{r.title}</p>}
+                <p className="text-sm text-gray-600">{r.body}</p>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </div>
   );
 }

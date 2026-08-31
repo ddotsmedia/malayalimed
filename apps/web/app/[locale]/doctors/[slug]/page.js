@@ -1,8 +1,12 @@
 import { notFound } from 'next/navigation';
 import { resolveLocale, t } from '@/lib/i18n';
 import { getDoctorBySlug, doctorAvailability, doctorReviews } from '@/lib/doctors';
+import { reviewStats } from '@/lib/reviews';
+import { getSession } from '@/lib/session';
 import { initials, fmtCurrency, fmtTime } from '@/lib/formatters';
 import RatingDisplay from '@/components/RatingDisplay';
+import ReviewStats from '@/components/reviews/ReviewStats';
+import ReviewForm from '@/components/reviews/ReviewForm';
 
 export const dynamic = 'force-dynamic';
 const DAYS = { ml: ['ഞായർ', 'തിങ്കൾ', 'ചൊവ്വ', 'ബുധൻ', 'വ്യാഴം', 'വെള്ളി', 'ശനി'], en: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] };
@@ -19,7 +23,7 @@ export default async function DoctorProfile(props) {
   const ml = locale === 'ml';
   const d = await getDoctorBySlug(params.slug);
   if (!d) notFound();
-  const [avail, reviews] = await Promise.all([doctorAvailability(d.id), doctorReviews(d.id)]);
+  const [avail, reviews, stats, session] = await Promise.all([doctorAvailability(d.id), doctorReviews(d.id), reviewStats('doctor', d.id), getSession()]);
   const specialty = ml ? (d.specialty_ml || d.specialty_en) : d.specialty_en;
   const district = ml ? (d.district_ml || d.district_en) : d.district_en;
 
@@ -54,8 +58,10 @@ export default async function DoctorProfile(props) {
         <a href={`/${locale}/doctors/${d.slug}#book`} className="mt-3 inline-block rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white">{t(locale, 'book_now')}</a>
       </section>
 
-      <section>
-        <h2 className="mb-3 text-lg font-bold text-gray-900">{ml ? 'റിവ്യൂകൾ' : 'Reviews'}</h2>
+      <section className="space-y-3">
+        <h2 className="text-lg font-bold text-gray-900">{ml ? 'റിവ്യൂകൾ' : 'Reviews'}</h2>
+        {stats.count > 0 && <ReviewStats stats={stats} ml={ml} />}
+        <ReviewForm entityType="doctor" entityId={d.id} authed={!!session} locale={locale} />
         {reviews.length === 0 ? <p className="text-sm text-gray-500">{ml ? 'റിവ്യൂകളൊന്നുമില്ല' : 'No reviews yet'}</p> : (
           <ul className="space-y-2">
             {reviews.map((r, i) => (

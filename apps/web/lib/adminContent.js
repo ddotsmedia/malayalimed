@@ -76,6 +76,31 @@ export async function createContent(key, data) {
   } catch (err) { return { error: err.message.includes('unique') ? 'slug_taken' : err.message }; }
 }
 
+export async function getContent(key, id) {
+  const def = resourceDef(key); if (!def) return null;
+  const cols = ['id', ...def.fields.map((f) => f.name)].filter((c, i, a) => a.indexOf(c) === i);
+  const { rows } = await getPool().query(`SELECT ${cols.join(', ')} FROM ${def.table} WHERE id=$1 AND deleted_at IS NULL`, [id]);
+  return rows[0] || null;
+}
+
+export async function updateContent(key, id, data) {
+  const def = resourceDef(key); if (!def) return { error: 'bad_resource' };
+  const sets = []; const vals = [];
+  for (const f of def.fields) {
+    if (data[f.name] === undefined) continue;
+    if (f.req && String(data[f.name]).trim() === '') return { error: `${f.name}_required` };
+    vals.push(coerce(f, data[f.name]));
+    sets.push(`${f.name}=$${vals.length}${f.type === 'array' ? '::text[]' : ''}`);
+  }
+  if (sets.length === 0) return { error: 'no_fields' };
+  vals.push(id);
+  try {
+    const { rowCount } = await getPool().query(
+      `UPDATE ${def.table} SET ${sets.join(', ')}, updated_at=now() WHERE id=$${vals.length} AND deleted_at IS NULL`, vals);
+    return rowCount > 0 ? { ok: true } : { error: 'not_found' };
+  } catch (err) { return { error: err.message.includes('unique') ? 'slug_taken' : err.message }; }
+}
+
 export async function deleteContent(key, id) {
   const def = resourceDef(key); if (!def) return { error: 'bad_resource' };
   const { rowCount } = await getPool().query(`UPDATE ${def.table} SET deleted_at=now() WHERE id=$1 AND deleted_at IS NULL`, [id]);
