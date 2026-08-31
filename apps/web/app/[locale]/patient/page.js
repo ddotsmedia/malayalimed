@@ -41,6 +41,8 @@ export default async function PatientDashboard(props) {
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
         <Card href={`/${locale}/appointments`} label={ml ? 'അപ്പോയിന്റ്‌മെന്റുകൾ' : 'Appointments'} value={appts.length} />
         <Card href={`/${locale}/patient/health-records`} label={ml ? 'ഹെൽത്ത് റെക്കോർഡുകൾ' : 'Health Records'} value={records.length} />
+        <Card href={`/${locale}/patient/health-tracker`} label={ml ? 'ഹെൽത്ത് ട്രാക്കർ' : 'Health Tracker'} value="→" />
+        <Card href={`/${locale}/patient/prescriptions`} label={ml ? 'കുറിപ്പടികൾ' : 'Prescriptions'} value="→" />
         <Card href={`/${locale}/ask`} label={ml ? 'ചോദ്യങ്ങൾ' : 'Ask a Doctor'} value="→" />
       </div>
 
