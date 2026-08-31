@@ -16,8 +16,10 @@ export async function PUT(request) {
   if (!s) return NextResponse.json({ errors: ['unauthenticated'] }, { status: 401 });
   const v = parse(reminderSchema, await request.json().catch(() => ({})));
   if (!v.ok) return NextResponse.json({ errors: [v.error] }, { status: 400 });
-  if (v.data.quietHoursStart && v.data.quietHoursEnd && v.data.quietHoursStart >= v.data.quietHoursEnd) {
-    return NextResponse.json({ errors: ['quiet_hours_start must be before quiet_hours_end'] }, { status: 400 });
+  // Quiet hours may span midnight (e.g. 21:00 -> 08:00), so no start<end check;
+  // reject only an identical start/end pair (a zero-length window is meaningless).
+  if (v.data.quietHoursStart && v.data.quietHoursEnd && v.data.quietHoursStart === v.data.quietHoursEnd) {
+    return NextResponse.json({ errors: ['quiet hours start and end must differ'] }, { status: 400 });
   }
   return NextResponse.json({ data: await updatePreferences(s.userId, v.data), errors: null });
 }
