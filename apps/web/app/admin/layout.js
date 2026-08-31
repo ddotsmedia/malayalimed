@@ -8,7 +8,7 @@ export const metadata = { title: 'Admin · MalayaliMed' };
 const NAV = [
   ['/admin/dashboard', '📊 Dashboard'], ['/admin/users', '👥 Users'],
   ['/admin/doctors', '🩺 Doctors'], ['/admin/hospitals', '🏥 Hospitals'],
-  ['/admin/appointments', '📅 Appointments'], ['/admin/analytics', '📈 Analytics'],
+  ['/admin/appointments', '📅 Appointments'], ['/admin/content', '📚 Content'], ['/admin/analytics', '📈 Analytics'],
   ['/admin/reports', '📄 Reports'], ['/admin/settings', '⚙️ Settings']
 ];
 
