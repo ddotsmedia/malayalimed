@@ -6,9 +6,10 @@ export default function Navbar({ locale = 'ml' }) {
   const nav = [
     { href: `/${locale}/doctors`, label: t(locale, 'doctors') },
     { href: `/${locale}/hospitals`, label: t(locale, 'hospitals') },
+    { href: `/${locale}/lab-tests`, label: locale === 'ml' ? 'ലാബ് ടെസ്റ്റുകൾ' : 'Lab Tests' },
+    { href: `/${locale}/ask`, label: locale === 'ml' ? 'ഡോക്ടറോട് ചോദിക്കൂ' : 'Ask a Doctor' },
     { href: `/${locale}/jobs`, label: t(locale, 'jobs') },
-    { href: `/${locale}/womens-health`, label: t(locale, 'womens_health') },
-    { href: `/${locale}/mental-health`, label: t(locale, 'mental_health') }
+    { href: `/${locale}/womens-health`, label: t(locale, 'womens_health') }
   ];
   return (
     <header className="sticky top-0 z-30 border-b border-gray-200 bg-white/90 backdrop-blur">
