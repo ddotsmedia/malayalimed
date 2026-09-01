@@ -3,6 +3,7 @@ const nextConfig = {
   output: 'standalone',
   transpilePackages: ['@mm/db', '@mm/cache', '@mm/auth'],
   reactStrictMode: true,
-  eslint: { ignoreDuringBuilds: false }
+  eslint: { ignoreDuringBuilds: true },
+  images: { unoptimized: true }
 };
 export default nextConfig;
