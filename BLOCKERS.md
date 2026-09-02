@@ -17,3 +17,30 @@ Everything present is functional and consistent; expansion is straightforward fr
 
 ## Safety note
 This project was created in a **new, isolated folder** (`c:\websites\malayalimed`) specifically to avoid overwriting the unrelated production `kerala-healthcare-platform` repo that shares this machine. It has its own git history.
+
+## Batch 19: Knowledge Library (2026)
+
+### Decided: New *_library tables (med_library, lab_test_library, proc_library) instead of medicines/lab_tests/procedures
+- Reason: those tables already exist (0026/0023/0028) with NOT NULL name/slug + different schemas; CREATE IF NOT EXISTS would skip them and the seed would fail on missing columns / NOT-NULL.
+- Alternative: ALTER the existing tables (rejected — would break the existing /ml/* directory pages and violate additive-only).
+- Impact: knowledge pages at top-level /medicines /lab-tests /procedures (distinct from locale /ml/medicines directory); both coexist.
+- Risk: two medicine datasets; acceptable (knowledge vs directory are different features).
+
+### Decided: uuid_generate_v4() instead of spec's gen_random_uuid()
+- Reason: consistency with all prior migrations (uuid-ossp already enabled).
+- Impact: none (both produce UUIDs).
+
+### Decided: Migration file under services/db/migrations/ not infra/database/migrations/
+- Reason: that is where the pnpm db:migrate runner reads from.
+- Impact: none.
+
+### Decided: Reusable KList/KSearch/ConditionSection + 4 detail components power all 50 pages
+- Reason: token efficiency; most list/search/section pages are thin wrappers.
+- Risk: none.
+
+### Deferred: Redis caching of GET responses (spec assumed TTL 3600s)
+- Reason: @mm/cache is an in-process Map, not a Redis client; queries are fast and paginated.
+- Impact: no shared cache; fine at current scale.
+
+### Stub: dosage calculator uses a generic 15 mg/kg estimate (not per-drug pharmacology)
+- Reason: no per-medicine dosing dataset; labeled clearly as illustrative + "consult a doctor".
