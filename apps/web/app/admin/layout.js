@@ -13,7 +13,7 @@ const NAV = [
   ['/admin/appointments', '📅 Appointments'], ['/admin/reviews', '⭐ Reviews'],
   ['/admin/doctor-registrations', '📝 Registrations'], ['/admin/bulk-import', '⬆️ Bulk Import'],
   ['/admin/billing', '🧾 Billing'], ['/admin/lab-orders', '🔬 Lab Orders'], ['/admin/pharmacy/inventory', '💊 Pharmacy'],
-  ['/admin/moderation/content', '🛡️ Moderation'],
+  ['/admin/moderation/content', '🛡️ Moderation'], ['/admin/iot-dashboard', '📡 IoT Devices'], ['/admin/scribe-audit', '🎙️ Scribe Audit'],
   ['/admin/content', '📚 Content'], ['/admin/analytics', '📈 Analytics'], ['/admin/analytics/revenue', '💰 Revenue'],
   ['/admin/audit-logs', '🧾 Audit Logs'], ['/admin/reports', '📄 Reports'], ['/admin/settings', '⚙️ Settings'],
 ];
