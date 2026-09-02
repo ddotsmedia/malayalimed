@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS resume_templates (id uuid PRIMARY KEY DEFAULT uuid_ge
 CREATE TABLE IF NOT EXISTS user_resumes (id uuid PRIMARY KEY DEFAULT uuid_generate_v4(), user_id uuid REFERENCES users(id), template_id uuid REFERENCES resume_templates(id), title varchar(100), full_name varchar(100), email varchar(100), phone varchar(20), summary text, data jsonb, created_at timestamptz DEFAULT now(), updated_at timestamptz DEFAULT now());
 CREATE INDEX IF NOT EXISTS idx_resume_user ON user_resumes(user_id);
 
-CREATE TABLE IF NOT EXISTS candidate_profiles (id uuid PRIMARY KEY DEFAULT uuid_generate_v4(), user_id uuid UNIQUE REFERENCES users(id), headline varchar(200), summary text, specialties text[], experience_years int, current_role varchar(100), preferred_locations text[], preferred_job_types text[], willing_to_relocate boolean, salary_expectations_min numeric(12,2), salary_expectations_max numeric(12,2), is_verified boolean DEFAULT false, visibility varchar(20) DEFAULT 'public', skills text[], created_at timestamptz DEFAULT now());
+CREATE TABLE IF NOT EXISTS candidate_profiles (id uuid PRIMARY KEY DEFAULT uuid_generate_v4(), user_id uuid UNIQUE REFERENCES users(id), headline varchar(200), summary text, specialties text[], experience_years int, current_role_title varchar(100), preferred_locations text[], preferred_job_types text[], willing_to_relocate boolean, salary_expectations_min numeric(12,2), salary_expectations_max numeric(12,2), is_verified boolean DEFAULT false, visibility varchar(20) DEFAULT 'public', skills text[], created_at timestamptz DEFAULT now());
 CREATE INDEX IF NOT EXISTS idx_candidate_user ON candidate_profiles(user_id);
 CREATE INDEX IF NOT EXISTS idx_candidate_spec ON candidate_profiles USING GIN(specialties);
 
