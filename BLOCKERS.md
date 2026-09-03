@@ -74,3 +74,27 @@ This project was created in a **new, isolated folder** (`c:\websites\malayalimed
 - Hospital admin endpoints (create/update/delete) — listed but not implemented
 - Specialty/district filtering endpoints — functions exist in libraries, routes deferred
 - WebSocket for real-time bed availability — polling-based (30s refresh) sufficient for MVP
+
+## Deployment: Redis Port Fix (Pending VPS Execution)
+
+### Issue
+- Redis port conflict: docker-mm-redis-1 trying to bind 127.0.0.1:6379, but lsn-redis already owns it
+- Solution: Change MalayaliMed redis to 127.0.0.1:6380
+
+### Status
+- **Script created:** `infra/scripts/fix-redis-port.sh` (all commands ready)
+- **Blocker:** VPS srv1778407 not reachable from this environment (no SSH access)
+- **Action:** Run script manually on VPS as `root@srv1778407:/opt/malayalimed$ bash infra/scripts/fix-redis-port.sh`
+
+### Script does:
+1. Update docker-compose.prod.yml: 6379→6380
+2. Stop/restart mm-redis on new port
+3. Git pull + push (sync)
+4. Verify containers running
+5. Test admin panel (optional)
+
+### Expected outcome after execution:
+- ✅ Redis on 127.0.0.1:6380
+- ✅ All containers healthy
+- ✅ Git synced (main branch)
+- ✅ Ready for Batch 21 deployment
