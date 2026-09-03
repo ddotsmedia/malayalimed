@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { listHosps, countHosps } from '@/lib/hospitals';
+import { listProfs, countProfs } from '@/lib/professionals';
 
 export const dynamic = 'force-dynamic';
 
@@ -8,7 +8,7 @@ export async function GET(request) {
   const page = parseInt(searchParams.get('page') || '1');
   const limit = parseInt(searchParams.get('limit') || '20');
   const offset = (page - 1) * limit;
-  const [data, total] = await Promise.all([listHosps(limit, offset), countHosps()]);
+  const [data, total] = await Promise.all([listProfs(limit, offset), countProfs()]);
   return NextResponse.json({
     data,
     meta: { page, limit, total, pages: Math.ceil(total / limit) },
