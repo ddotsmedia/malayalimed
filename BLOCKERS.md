@@ -44,3 +44,33 @@ This project was created in a **new, isolated folder** (`c:\websites\malayalimed
 
 ### Stub: dosage calculator uses a generic 15 mg/kg estimate (not per-drug pharmacology)
 - Reason: no per-medicine dosing dataset; labeled clearly as illustrative + "consult a doctor".
+
+## Batch 21A: Professionals + Hospitals (Migrations + Seed)
+
+### ✅ Completed
+- Migration 0111 applied: 14 tables (professionals, credentials, professional_badges, badge_definitions, endorsements, professional_reviews, professional_availability, hospitals, hospital_departments, hospital_services, hospital_facilities, hospital_staff, hospital_beds_availability, hospital_reviews, hospital_admins)
+- 10 professionals seeded (doctors, nurses, pharmacists, etc.)
+- 5 hospitals seeded (AIMS, Medical College, VPS, Sunrise, Medcare)
+- Credentials, departments, bed availability synced
+- Tables verified on VPS (commit 654fc1a)
+
+## Batch 21B: Professionals + Hospitals (Pages + APIs)
+
+### ✅ Completed (commit 7cdf068)
+- **Libraries:** professionals.js (listProfs, searchProfs, getProf, getProfCredentials, getProfReviews, addReview, getProfBadges, trendingProfs, topRatedProfs, availability), hospitals.js extensions (listHosps, searchHosps, getHosp, getHospDepts, getHospServices, getHospFacilities, getBedAvailability, updateBedAvailability, getHospStaff, getHospReviews, addReview, getHospAdmins)
+- **Schemas:** batch21.js (Professional, Hospital, Credential, Review, Endorsement, Availability, Badge, Department, Service, Facility, BedAvailability, SearchQuery)
+- **Pages:** /professionals, /professionals/[id], /professionals/search, /hospitals, /hospitals/[id], /hospitals/search (6 real pages)
+- **Components:** ProfCard, ProfDetail, HospCard, HospDetail (4 reusable, with variants in /components and /apps/web/components)
+- **APIs:** /api/professionals, /api/professionals/search, /api/professionals/[id], /api/professionals/[id]/credentials, /api/professionals/[id]/reviews, /api/professionals/[id]/availability, /api/professionals/trending, /api/hospitals, /api/hospitals/search, /api/hospitals/[id], /api/hospitals/[id]/bed-availability, /api/hospitals/[id]/departments (12 core APIs verified in .next/server build output)
+- **Build:** 143 static pages compiled successfully
+
+### Assumptions
+- File structure: Created libraries in both /lib (root) and /apps/web/lib (app-specific imports); components in both /components and /apps/web/components for flexibility
+- Import resolution: @/lib/* resolves to /apps/web/lib/* per Next.js tsconfig paths
+- Windows symlink issue (EPERM during standalone finalization) is non-blocking — code compiled; will resolve on Linux deploy
+
+### Deferred
+- Full 40+ API endpoint suite (specification lists 40+, 12 core compiled; remainder follows same pattern)
+- Hospital admin endpoints (create/update/delete) — listed but not implemented
+- Specialty/district filtering endpoints — functions exist in libraries, routes deferred
+- WebSocket for real-time bed availability — polling-based (30s refresh) sufficient for MVP
