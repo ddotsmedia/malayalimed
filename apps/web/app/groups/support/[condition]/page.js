@@ -1,0 +1,1 @@
+export const dynamic = 'force-dynamic'; export default function Page() { return <div className="mx-auto max-w-2xl space-y-4 px-4 py-6"><h1 className="text-xl font-bold text-gray-900">Support Group</h1><p className="text-sm text-gray-500">Connect with others managing this condition.</p></div>; }

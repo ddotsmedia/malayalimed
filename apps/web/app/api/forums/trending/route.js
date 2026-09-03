@@ -1,0 +1,1 @@
+import { NextResponse } from 'next/server'; import { safeQuery } from '@mm/db'; export const dynamic = 'force-dynamic'; export async function GET() { const data = await safeQuery('SELECT id, specialty, thread_type, title, views, helpful_count FROM forum_threads ORDER BY views DESC, created_at DESC LIMIT 20'); return NextResponse.json({ data, errors: null }); }

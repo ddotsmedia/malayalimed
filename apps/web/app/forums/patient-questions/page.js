@@ -1,0 +1,1 @@
+export const dynamic = 'force-dynamic'; export const metadata = { title: 'Patient Q&A' }; export default function Page() { return <div className="mx-auto max-w-4xl space-y-4 px-4 py-6"><h1 className="text-2xl font-bold text-gray-900">Patient Questions</h1><p className="text-sm text-gray-600">Ask healthcare professionals your questions.</p></div>; }

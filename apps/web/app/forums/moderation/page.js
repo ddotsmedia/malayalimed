@@ -1,0 +1,1 @@
+export const dynamic = 'force-dynamic'; export const metadata = { title: 'Moderation' }; export default function Page() { return <div className="mx-auto max-w-4xl space-y-4 px-4 py-6"><h1 className="text-2xl font-bold text-gray-900">Moderation Queue</h1><p className="text-sm text-gray-500">Admin only: pending posts for review.</p></div>; }
