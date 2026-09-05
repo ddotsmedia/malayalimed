@@ -118,3 +118,36 @@ This project was created in a **new, isolated folder** (`c:\websites\malayalimed
 - ✅ All containers healthy
 - ✅ Website responding
 - ✅ Ready for Batch 21C deployment
+
+## Admin Panel Issue (Diagnosis Done)
+
+### Symptom
+- Admin dashboard redirects to /ml instead of loading
+- `if (!(await requireAdmin())) redirect('/ml')` suggests session is failing
+
+### Root Cause (Diagnosed)
+- `requireAdmin()` returns session object if `role === 'platform_admin'`, null otherwise
+- Redirect fires if session is null or role is not platform_admin
+- Likely: admin user doesn't exist in DB OR not logged in
+
+### Solution Implemented in Script
+- `infra/scripts/admin-panel-fix.sh` handles:
+  1. Check if admin user exists in users table
+  2. Verify requireAdmin() logic
+  3. Test auth flow (/api/v1/auth/session)
+  4. Rebuild admin routes if not compiled
+  5. **Create admin user if missing**: `email: admin@malayalimed.com, role: platform_admin, is_verified: true`
+
+### Execution
+```bash
+ssh root@srv1778407
+cd /opt/malayalimed
+bash infra/scripts/admin-panel-fix.sh
+```
+
+### Expected Outcome
+- ✅ Admin user exists in DB
+- ✅ Admin can log in as admin@malayalimed.com
+- ✅ /admin/dashboard loads (no redirect)
+- ✅ Admin sidebar + nav visible
+- ✅ All admin pages accessible
