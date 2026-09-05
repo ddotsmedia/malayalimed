@@ -119,6 +119,31 @@ This project was created in a **new, isolated folder** (`c:\websites\malayalimed
 - ✅ Website responding
 - ✅ Ready for Batch 21C deployment
 
+## Admin Panel Login — LOGIN ERROR FIX
+
+### Issue: "Incorrect email or password"
+- Root cause: Admin user not created in migrations
+- Admin user doesn't exist in users table
+- Or password_hash is invalid/literal string
+
+### Solution: Complete Setup Script
+- Script: `infra/scripts/admin-complete-setup.sh`
+- Creates admin user if missing
+- Generates bcrypt hash (PostgreSQL crypt + fallback Node.js)
+- Sets correct password_hash in DB
+- Tests login endpoint
+
+### Execution (on VPS):
+```bash
+bash infra/scripts/admin-complete-setup.sh
+```
+
+### Credentials After Fix:
+- Email: `admin@malayalimed.com`
+- Password: `admin123`
+- Role: `platform_admin`
+- Verified: `true`
+
 ## Admin Panel Login — FIXED ✅
 
 ### Implementation (Commit: e3d3bb4)
