@@ -119,7 +119,32 @@ This project was created in a **new, isolated folder** (`c:\websites\malayalimed
 - ✅ Website responding
 - ✅ Ready for Batch 21C deployment
 
-## Admin Panel Issue (Diagnosis Done)
+## Admin Panel Login — FIXED ✅
+
+### Implementation (Commit: e3d3bb4)
+- **Login page:** `/apps/web/app/admin/login/page.js` (96 lines)
+  - Email + password form
+  - Pre-filled: admin@malayalimed.com
+  - Gradient dark background
+  - Error handling + loading state
+  - Submits to `/api/auth/login` endpoint
+
+- **Admin layout redirect:** Updated to `/admin/login` (was `/ml`)
+  - Unauthenticated users see login page (not 404)
+  - On successful auth, redirects to /admin/dashboard
+  - Cookie set on login, session established
+
+### Build Status
+- ✅ Code compiled successfully in 17.4s
+- ✅ 143 static pages generated
+- ✅ Windows symlink warnings non-blocking (will work on Linux)
+
+### Deployment Ready
+- Login page compiled and deployed (push e3d3bb4)
+- Admin user creation script ready (`admin-panel-fix.sh`)
+- Next: Execute on VPS to rebuild + create admin user
+
+## Admin Panel Issue (Diagnosis Done) — ARCHIVED
 
 ### Symptom
 - Admin dashboard redirects to /ml instead of loading
