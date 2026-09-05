@@ -19,7 +19,7 @@ const NAV = [
 ];
 
 export default async function AdminLayout({ children }) {
-  if (!(await requireAdmin())) redirect('/ml');
+  if (!(await requireAdmin())) redirect('/admin/login');
   return (
     <AdminProviders>
       <div className="min-h-screen bg-slate-50 lg:grid lg:grid-cols-[220px_1fr]">
