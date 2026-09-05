@@ -142,7 +142,8 @@ This project was created in a **new, isolated folder** (`c:\websites\malayalimed
 ### Deployment Ready
 - Login page compiled and deployed (push e3d3bb4)
 - Admin user creation script ready (`admin-panel-fix.sh`)
-- Next: Execute on VPS to rebuild + create admin user
+- Admin password hash fix script ready (`admin-password-fix.sh`)
+- Next: Execute on VPS to rebuild + create admin user + set password hash
 
 ## Admin Panel Issue (Diagnosis Done) — ARCHIVED
 
