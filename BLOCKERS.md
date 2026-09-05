@@ -75,26 +75,46 @@ This project was created in a **new, isolated folder** (`c:\websites\malayalimed
 - Specialty/district filtering endpoints — functions exist in libraries, routes deferred
 - WebSocket for real-time bed availability — polling-based (30s refresh) sufficient for MVP
 
-## Deployment: Redis Port Fix (Pending VPS Execution)
+## Deployment: Redis Port Fix + Git Sync (Pending VPS Execution)
 
-### Issue
-- Redis port conflict: docker-mm-redis-1 trying to bind 127.0.0.1:6379, but lsn-redis already owns it
+### Issue 1: Redis port conflict
+- docker-mm-redis-1 trying to bind 127.0.0.1:6379, but lsn-redis already owns it
 - Solution: Change MalayaliMed redis to 127.0.0.1:6380
 
-### Status
-- **Script created:** `infra/scripts/fix-redis-port.sh` (all commands ready)
-- **Blocker:** VPS srv1778407 not reachable from this environment (no SSH access)
-- **Action:** Run script manually on VPS as `root@srv1778407:/opt/malayalimed$ bash infra/scripts/fix-redis-port.sh`
+### Issue 2: Git divergence
+- Local has commits (redis fix, deployment scripts)
+- Remote has Batch 21A/21B code
+- Need to sync both directions (pull remote, push local)
 
-### Script does:
+### Status
+- **Scripts created:** 
+  - `infra/scripts/fix-redis-port.sh` (redis fix)
+  - `infra/scripts/git-sync.sh` (git sync)
+- **Blocker:** VPS srv1778407 not reachable from this environment (no SSH access)
+- **Action:** Run on VPS as `root@srv1778407:/opt/malayalimed$ bash infra/scripts/[script].sh`
+
+### Scripts do:
+**fix-redis-port.sh:**
 1. Update docker-compose.prod.yml: 6379→6380
 2. Stop/restart mm-redis on new port
-3. Git pull + push (sync)
-4. Verify containers running
-5. Test admin panel (optional)
+3. Verify containers running
+4. Test admin panel (optional)
+
+**git-sync.sh:**
+1. Fetch from origin/main
+2. Pull remote changes
+3. Resolve any conflicts (take remote as source of truth)
+4. Push local commits
+5. Verify full sync (local == remote)
+6. Test website + containers
+
+### Execution order:
+1. `bash infra/scripts/fix-redis-port.sh` (fixes redis + git status)
+2. `bash infra/scripts/git-sync.sh` (syncs git + verifies app)
 
 ### Expected outcome after execution:
 - ✅ Redis on 127.0.0.1:6380
+- ✅ Git: local == remote (fully synced)
 - ✅ All containers healthy
-- ✅ Git synced (main branch)
-- ✅ Ready for Batch 21 deployment
+- ✅ Website responding
+- ✅ Ready for Batch 21C deployment
