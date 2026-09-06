@@ -126,12 +126,12 @@ This project was created in a **new, isolated folder** (`c:\websites\malayalimed
 - Admin user doesn't exist in users table
 - Or password_hash is invalid/literal string
 
-### Solution: Complete Setup Script
-- Script: `infra/scripts/admin-complete-setup.sh`
-- Creates admin user if missing
-- Generates bcrypt hash (PostgreSQL crypt + fallback Node.js)
-- Sets correct password_hash in DB
-- Tests login endpoint
+### Solution: Scrypt Hash Fix Script
+- Script: `infra/scripts/admin-scrypt-hash-fix.sh`
+- Uses @mm/auth.hashPassword() to generate scrypt format
+- Hash format: `scrypt$<salt_hex>$<key_hex>`
+- Updates users.password_hash in DB
+- Tests login endpoint with correct hash
 
 ### Execution (on VPS):
 ```bash
