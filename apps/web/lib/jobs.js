@@ -88,3 +88,37 @@ export async function countJobs() {
   const rows = await safeQuery(`SELECT COUNT(*) as cnt FROM jobs WHERE deleted_at IS NULL`);
   return rows[0]?.cnt || 0;
 }
+
+export async function jobFilters() {
+  const specs = await getDistinctSpecializations();
+  const dists = await getDistinctDistricts();
+  return {
+    specializations: specs.map(s => s.specialization),
+    districts: dists.map(d => d.location_district),
+  };
+}
+
+export async function salaryInsights(specialization = null, district = null) {
+  const where = ['deleted_at IS NULL'];
+  const vals = [];
+
+  if (specialization) {
+    vals.push(specialization);
+    where.push(`specialization = $${vals.length}`);
+  }
+  if (district) {
+    vals.push(district);
+    where.push(`location_district = $${vals.length}`);
+  }
+
+  const rows = await safeQuery(
+    `SELECT 
+      MIN(salary_min) as min_salary,
+      MAX(salary_max) as max_salary,
+      AVG((salary_min + salary_max) / 2) as avg_salary,
+      COUNT(*) as job_count
+     FROM jobs WHERE ${where.join(' AND ')}`,
+    vals
+  );
+  return rows[0] || { min_salary: 0, max_salary: 0, avg_salary: 0, job_count: 0 };
+}
