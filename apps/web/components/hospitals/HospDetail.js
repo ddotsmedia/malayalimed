@@ -1,4 +1,4 @@
-export default function HospDetail({ hosp, depts, services, facilities, beds, staff }) {
+export default function HospDetail({ hosp, depts, services, facilities, beds, staff, reviews }) {
   if (!hosp) return null;
   return (
     <div className="max-w-5xl space-y-6">
@@ -33,6 +33,20 @@ export default function HospDetail({ hosp, depts, services, facilities, beds, st
             <div key={d.id} className="border rounded p-3 mb-2">
               <p className="font-semibold">{d.department_name}</p>
               <p className="text-sm text-gray-600">{d.specialty} · {d.staff_count} staff</p>
+            </div>
+          ))}
+        </div>
+      )}
+      {reviews && reviews.length > 0 && (
+        <div className="bg-white rounded-lg p-6">
+          <h2 className="text-xl font-bold mb-4">Reviews ({reviews.length})</h2>
+          {reviews.map((r) => (
+            <div key={r.id} className="border rounded p-3 mb-2">
+              <div className="flex justify-between">
+                <span className="font-semibold">{r.rating}★</span>
+                <span className="text-xs text-gray-500">{new Date(r.created_at).toLocaleDateString()}</span>
+              </div>
+              <p className="text-sm">{r.review_text}</p>
             </div>
           ))}
         </div>

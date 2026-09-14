@@ -133,3 +133,47 @@ export async function countHosps() {
   const rows = await safeQuery(`SELECT COUNT(*) as cnt FROM hospitals WHERE deleted_at IS NULL`);
   return rows[0]?.cnt || 0;
 }
+
+export async function searchHospsAdvanced(filters = {}) {
+  const { q = '', district = '', minRating = 0, minBeds = 0, limit = 20, offset = 0 } = filters;
+  const where = ['deleted_at IS NULL'];
+  const vals = [];
+
+  if (q) {
+    vals.push(`%${q}%`);
+    where.push(`(name_en ILIKE $${vals.length} OR address ILIKE $${vals.length})`);
+  }
+  if (district) {
+    vals.push(district);
+    where.push(`district = $${vals.length}`);
+  }
+  if (minRating > 0) {
+    vals.push(minRating);
+    where.push(`average_rating >= $${vals.length}`);
+  }
+  if (minBeds > 0) {
+    vals.push(minBeds);
+    where.push(`beds_total >= $${vals.length}`);
+  }
+
+  vals.push(limit);
+  vals.push(offset);
+
+  return safeQuery(
+    `SELECT id, name_en, name_ml, district, beds_total, icu_beds, general_beds, average_rating, is_verified, accreditations, website FROM hospitals WHERE ${where.join(' AND ')} ORDER BY average_rating DESC LIMIT $${vals.length - 1} OFFSET $${vals.length}`,
+    vals
+  );
+}
+
+export async function getDistinctHospDistricts() {
+  return safeQuery(
+    `SELECT DISTINCT district FROM hospitals WHERE deleted_at IS NULL AND district IS NOT NULL ORDER BY district`
+  );
+}
+
+export async function addHospReview(hospId, reviewerId, rating, reviewText) {
+  return safeQuery(
+    `INSERT INTO hospital_reviews (hospital_id, reviewer_id, rating, review_text, created_at) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP) RETURNING id, rating, created_at`,
+    [hospId, reviewerId, rating, reviewText]
+  );
+}

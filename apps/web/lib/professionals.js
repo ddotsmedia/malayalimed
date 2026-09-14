@@ -111,3 +111,56 @@ export async function countProfs() {
   const rows = await safeQuery(`SELECT COUNT(*) as cnt FROM professionals WHERE deleted_at IS NULL`);
   return rows[0]?.cnt || 0;
 }
+
+export async function searchProfsAdvanced(filters = {}) {
+  const { q = '', specialty = '', district = '', minRating = 0, availableNow = false, limit = 20, offset = 0 } = filters;
+  const where = ['deleted_at IS NULL'];
+  const vals = [];
+
+  if (q) {
+    vals.push(`%${q}%`);
+    where.push(`(bio ILIKE $${vals.length} OR location_district ILIKE $${vals.length})`);
+  }
+  if (specialty) {
+    vals.push(specialty);
+    where.push(`$${vals.length} = ANY(specialties)`);
+  }
+  if (district) {
+    vals.push(district);
+    where.push(`location_district = $${vals.length}`);
+  }
+  if (minRating > 0) {
+    vals.push(minRating);
+    where.push(`average_rating >= $${vals.length}`);
+  }
+  if (availableNow) {
+    where.push(`is_available_for_work = true`);
+  }
+
+  vals.push(limit);
+  vals.push(offset);
+
+  return safeQuery(
+    `SELECT id, role, specialties, bio, location_district, average_rating, verification_status, badges, is_available_for_work, created_at FROM professionals WHERE ${where.join(' AND ')} ORDER BY average_rating DESC LIMIT $${vals.length - 1} OFFSET $${vals.length}`,
+    vals
+  );
+}
+
+export async function addProfReview(profId, reviewerId, rating, reviewText, category = 'general') {
+  return safeQuery(
+    `INSERT INTO professional_reviews (professional_id, reviewer_id, rating, review_text, category, created_at) VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP) RETURNING id, rating, created_at`,
+    [profId, reviewerId, rating, reviewText, category]
+  );
+}
+
+export async function getDistinctSpecialties() {
+  return safeQuery(
+    `SELECT DISTINCT unnest(specialties) as specialty FROM professionals WHERE deleted_at IS NULL ORDER BY specialty`
+  );
+}
+
+export async function getDistinctDistricts() {
+  return safeQuery(
+    `SELECT DISTINCT location_district FROM professionals WHERE deleted_at IS NULL AND location_district IS NOT NULL ORDER BY location_district`
+  );
+}
